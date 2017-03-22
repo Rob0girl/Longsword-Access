@@ -5,6 +5,6 @@
 * Merissa Joubert - <https://github.com/Rob0girl>
 * Dewald DeJager - <https://github.com/DewaldDeJager>
 * Keo Dinake- <https://github.com/kmdinake>
-* Idrian - <https://github.com/Idrian>
+* Idrian - <https://www.linkedin.com/in/eridianentertainment>
 * Corne Els - <https://github.com/Corne-Els>
 * Bernard -<https://github.com/Bernardvt>
