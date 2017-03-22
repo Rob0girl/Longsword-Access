@@ -4,7 +4,7 @@
 ### Team members
 * Merissa Joubert - <https://github.com/Rob0girl>
 * Dewald DeJager - <https://github.com/DewaldDeJager>
-* Keo Dinake- 
+* Keo Dinake- <https://github.com/kmdinake>
 * Idrian - <https://github.com/Idrian>
 * Corne Els - <https://github.com/Corne-Els>
-* Bernard -
+* Bernard -<https://github.com/Bernardvt>
