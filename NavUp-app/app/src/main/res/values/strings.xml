@@ -7,4 +7,5 @@
     <string name="button_guestLogin">Guest</string>
     <string name="user_email">Email@example.com</string>
     <string name="Back">Back</string>
+    <string name="title_activity_maps">NavUP_Map</string>
 </resources>

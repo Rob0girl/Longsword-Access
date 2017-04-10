@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             Once I am done with the singleton class I will save the address there so it can be called repeatedly from there and saved once
             but for now I wrote it in Login and register
          */
-        String urlAddress = "http://192.168.1.116:8888";
+        String urlAddress = "http://10.0.2.2:8080/nav-up/users/Login";
 
         EditText userName, password;
         final TextView errorlbl;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             userDetails.put("password", password.getText().toString());
             //testing purposes
             System.out.println(userDetails.toString());
+            go_to_map();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -108,5 +109,17 @@ public class MainActivity extends AppCompatActivity {
             Volley.newRequestQueue(this).add(jsonRequest);
         }
 
+
+    }
+
+    public void login_as_guest(View view)
+    {
+        go_to_map();
+    }
+
+    public void go_to_map()
+    {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 }
