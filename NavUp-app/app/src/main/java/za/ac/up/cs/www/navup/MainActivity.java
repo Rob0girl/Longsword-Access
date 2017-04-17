@@ -16,6 +16,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
          */
         String urlAddress = "http://10.0.2.2:8080/nav-up/users/Login";
 
-        EditText userName, password;
+        final EditText userName, password;
         final TextView errorlbl;
 
         userName = (EditText) findViewById(R.id.userName);
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             userDetails.put("password", password.getText().toString());
             //testing purposes
             System.out.println(userDetails.toString());
-            go_to_map();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -79,15 +81,21 @@ public class MainActivity extends AppCompatActivity {
                                 i.e. it is better not to send anything and have the request timeout than to send wrong data.
                              */
                             try{
-                                response = response.getJSONObject("user");
-                                String userName = response.getString("userName"),
-                                        password = response.getString("password"),
-                                        email = response.getString("email");
-                                System.out.println("userName: "+userName+"\nPassword: "+password);
-                                //Ok so how do I save this response to be carried over to
-                                //a new Activity nl. the navigation page?
-                                errorlbl.setText("Success");
-                                errorlbl.setTextColor(Integer.parseInt("ff669900"));
+                                Boolean success = Boolean.parseBoolean(response.getString("Success"));
+                                if(!success)
+                                {
+                                    // Some error message
+                                    errorlbl.setText("User already exists");
+                                }
+                                else
+                                {
+                                    // User is registered
+                                    errorlbl.setText("Successfully Registered");
+                                    go_to_map(userName.getText().toString());
+                                }
+
+
+
                             }
                             catch(JSONException e)
                             {
@@ -104,7 +112,18 @@ public class MainActivity extends AppCompatActivity {
                             errorlbl.setText(error.getMessage());
                             error.printStackTrace();
                         }
-                    });
+                    }){
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    //headers.put("Content-Type", "application/json;");
+                    return headers;
+                }
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+            };
 
             Volley.newRequestQueue(this).add(jsonRequest);
         }
@@ -114,12 +133,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void login_as_guest(View view)
     {
-        go_to_map();
+        go_to_map("Guest");
     }
 
-    public void go_to_map()
+    public void go_to_map(String name)
     {
         Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("userName",name);
         startActivity(intent);
+        finish();
     }
 }
