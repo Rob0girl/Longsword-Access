@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,6 +17,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Bernard van Tonder
@@ -61,7 +66,7 @@ public class NewPOIActivity extends AppCompatActivity {
      * server using volley.
      */
     public void createPointOfInterest(View view) {
-        String urlAddress = "http://10.0.2.2:8080/nav-up/users/Login";
+        String urlAddress = "http://www.nav-up/gis/insert-location";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String latitude = extras.getString("LATITUDE");
@@ -74,12 +79,14 @@ public class NewPOIActivity extends AppCompatActivity {
             POIRoom = (EditText) findViewById(R.id.pointOfInterestRoomName);
             errorlbl = (TextView) findViewById(R.id.errorMsg);
 
-            JSONObject newPOIDetails = new JSONObject();
+            JSONObject newPOI = new JSONObject();
             try {
-                newPOIDetails.put("poi_building", POIBuilding.getText().toString());
-                newPOIDetails.put("poi_room", POIRoom.getText().toString());
-                newPOIDetails.put("poi_latitude", latitude);
-                newPOIDetails.put("poi_longitude", longitude);
+                JSONObject newPOIDetails = new JSONObject();
+                newPOIDetails.put("building", POIBuilding.getText().toString());
+                newPOIDetails.put("room", POIRoom.getText().toString());
+                newPOIDetails.put("latitude", latitude);
+                newPOIDetails.put("longitude", longitude);
+                newPOI.put("locations",newPOIDetails);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -87,7 +94,9 @@ public class NewPOIActivity extends AppCompatActivity {
             if (POIBuilding.getText().toString().trim().isEmpty() || POIRoom.getText().toString().trim().isEmpty()) {
                 errorlbl.setText("Missing fields, please enter");
             } else {
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, urlAddress, newPOIDetails,
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST,
+                        urlAddress,
+                        newPOI,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -114,7 +123,14 @@ public class NewPOIActivity extends AppCompatActivity {
                                 errorlbl.setText(error.getMessage());
                                 error.printStackTrace();
                             }
-                        });
+                        }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        return headers;
+                    }
+                };
                 Volley.newRequestQueue(this).add(jsonRequest);
             }
         } else {
@@ -139,7 +155,7 @@ public class NewPOIActivity extends AppCompatActivity {
         startActivity(intent);
     }
     /**
-     *  This function directs to the menu view.
+     *  This function directs to the menu view. It is commented out till a menu exists
      */
     public void go_to_menu()
     {
