@@ -22,4 +22,10 @@
     <string name="option_get_place">Get place</string>
 
     <string name="pick_place">Choose a place</string>
+    
+    <string name="title_activity_poi_list">Points Of Interest</string>
+    <string name="button_done_select">Done</string>
+    <string name="button_deletePOI">Delete</string>
+    <string name="button_updatePOI">Update</string>
+    <string name="button_newPOI">Create</string>
 </resources>
