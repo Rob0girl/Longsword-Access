@@ -97,7 +97,7 @@ public class NewPOIActivity extends AppCompatActivity {
                                     if (successfulResponse) {
                                         errorlbl.setText("Success");
                                         errorlbl.setTextColor(Integer.parseInt("ff669900"));
-//                                        go_to_menu();
+                                        go_to_menu();
                                     } else {
                                         errorlbl.setText("Failed to send");
                                     }
@@ -139,11 +139,11 @@ public class NewPOIActivity extends AppCompatActivity {
         startActivity(intent);
     }
     /**
-     *  This function directs to the menu view. It is commented out till a menu exists
+     *  This function directs to the menu view.
      */
-//    public void go_to_menu()
-//    {
-//        Intent intent = new Intent(this, menuClassName.class);
-//        startActivity(intent);
-//    }
+    public void go_to_menu()
+    {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
 }
