@@ -69,6 +69,37 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+         <activity
+            android:name=".NewPOIActivity"
+            android:parentActivityName=".MainActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NewPOIActivity" />
+            >
+        </activity>
+
+        <activity
+            android:name=".SelectNewPOILocation"
+            android:label="@string/title_activity_maps">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="za.ac.up.cs.www.navup.NewPOIActivity" />
+        </activity>
+        <activity
+            android:name=".LocationList"
+            android:label="@string/title_activity_poi_list">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="za.ac.up.cs.www.navup.NewPOIActivity" />
+        </activity>
+        <activity
+            android:name=".UpdatePOIActivity"
+            android:label="Update Location">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="za.ac.up.cs.www.navup.LocationList" />
+        </activity>
 
     </application>
 
