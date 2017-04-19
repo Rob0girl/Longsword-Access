@@ -63,9 +63,13 @@ public class LocationList extends AppCompatActivity {
         populateLocationListArray();
 
         selectedLocationName = "";
-        ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
         ListView locationView = (ListView) findViewById(R.id.locationListView);
-        locationView.setAdapter(listAdapter);
+        if (locations != null) {
+            ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
+            locationView.setAdapter(listAdapter);
+        } else {
+            Toast.makeText(LocationList.this, "LocationList empty", Toast.LENGTH_SHORT).show();
+        }
 
         locationView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener(){
