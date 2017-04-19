@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="za.ac.up.cs.www.navup">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-
+    package="com.example.kmd.settings_demo">
 
     <application
         android:allowBackup="true"
@@ -24,83 +10,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
-            >
-        </activity>
-        <activity
-            android:name=".registerPage"
-            android:parentActivityName=".MainActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-            >
-        </activity>
-
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".navigationPage"
-            android:label="@string/title_activity_navigation_page"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-         <activity
-            android:name=".NewPOIActivity"
-            android:parentActivityName=".MainActivity">
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            android:name=".SettingsMainActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".HelpFAQActivity"
+            android:label="@string/lbl_helpfaq"
+            android:parentActivityName=".SettingsMainActivity" />
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notifications"
+            android:parentActivityName=".SettingsMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".NewPOIActivity" />
-            >
-        </activity>
-
-        <activity
-            android:name=".SelectNewPOILocation"
-            android:label="@string/title_activity_maps">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="za.ac.up.cs.www.navup.NewPOIActivity" />
+                android:value="com.example.kmd.settings_demo.SettingsMainActivity" />
         </activity>
         <activity
-            android:name=".LocationList"
-            android:label="@string/title_activity_poi_list">
+            android:name=".InterestPointActivity"
+            android:label="Points of Interest"
+            android:parentActivityName=".SettingsMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="za.ac.up.cs.www.navup.NewPOIActivity" />
+                android:value="com.example.kmd.settings_demo.SettingsMainActivity" />
         </activity>
-        <activity
-            android:name=".UpdatePOIActivity"
-            android:label="Update Location">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="za.ac.up.cs.www.navup.LocationList" />
-        </activity>
-
     </application>
 
 </manifest>
