@@ -22,6 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -36,6 +42,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -48,6 +63,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     String userName;
+                
+    private String selectedLocationName;
+    private String[] buildings;
+    private int buildingCount;
+    private int id;
+    private double latitude;
+    private double longitude;
+    private List<List<String>> rooms;
+    private int locationCount;
+    private String[] locations;
+    private LinkedList<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         /*
             get the locations from server
          */
-
+        populateLocationListArrayAndDisplay();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -306,5 +332,130 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+                
+    public void populateLocationListArrayAndDisplay() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://affogato.cs.up.ac.za:8080/nav-up/gis/get-all-buildings";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        buildingCount = response.length();
+                        locationCount = 0;
+                        buildings = new String[buildingCount];
+                        rooms = new ArrayList<List<String>>(buildingCount);
+                        try {
+                            JSONArray array = response.getJSONArray("buildings");
+                            for (int i=0; i<buildingCount; i++) {
+                                buildings[i] = array.getJSONObject(i).getString("building");
+                                rooms.add(new ArrayList<String>());
+                                populateRoomsOfBuilding(i);
+                            }
+                            onAllBuildingsStored();
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
+    }
+
+    /**
+     * This fills the location list with the data requested previously
+     */
+    public void onAllBuildingsStored() {
+        locations = new String[locationCount];
+        int currentLocationIndex = 0;
+        int roomsInBuilding;
+        for (int i=0; i<buildingCount; i++) {
+            roomsInBuilding = rooms.get(i).size();
+            for (int j=0; j < roomsInBuilding; j++){
+                locations[currentLocationIndex] = buildings[i] + ":" + rooms.get(i).get(j);
+                ++currentLocationIndex;
+            }
+        }
+    }
+    /**
+     * This function
+     * @param inBuildingNumber is the selected index from the listView.
+     */
+    public void populateRoomsOfBuilding(int inBuildingNumber){
+        final int buildingNumber = inBuildingNumber;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://affogato.cs.up.ac.za:8080/nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        int roomCount = response.length();
+                        try {
+                            JSONArray array = response.getJSONArray("rooms");
+                            markers = new LinkedList<Marker>();
+                            for (int i=0; i<roomCount; i++) {
+                                rooms.get(buildingNumber).add(array.getJSONObject(i).getString("room"));
+                                requestCoordinates(buildings[buildingNumber],
+                                        array.getJSONObject(i).getString("room"));
+                                ++locationCount;
+                            }
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
+    }
+
+    /**
+     * This function requests a building&room 's coordinates and displays a marker.
+     * @param buildingName name of the building
+     * @param roomName name of the room
+     */
+    private void requestCoordinates(String buildingName, String roomName) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://affogato.cs.up.ac.za:8080/nav-up/gis/get-location?building={"+
+                buildingName+"}&venue={"+roomName+"}";
+        final String title = buildingName + ":" + roomName;
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            latitude = response.getJSONObject("location").getDouble("lat");
+                            longitude = response.getJSONObject("location").getDouble("long");
+                            id = response.getJSONObject("location").getInt("id");
+
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(latitude, longitude))
+                                    .title(title));
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
     }
 }
