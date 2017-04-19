@@ -138,6 +138,7 @@ public class LocationList extends AppCompatActivity {
                                 rooms.add(new ArrayList<String>());
                                 populateRoomsOfBuilding(i);
                             }
+                            onAllBuildingsStored();
                         } catch (JSONException jE) {
                             Toast.makeText(LocationList.this,
                                     "Json convert error",
@@ -151,6 +152,9 @@ public class LocationList extends AppCompatActivity {
                     }
                 });
         queue.add(getRequest);
+    }
+
+     public void onAllBuildingsStored() {
         locations = new String[locationCount];
         int currentLocationIndex = 0;
         int roomsInBuilding;
@@ -162,7 +166,6 @@ public class LocationList extends AppCompatActivity {
             }
         }
     }
-
     /**
      * This function
      * @param buildingNumber is the selected index from the listView.
