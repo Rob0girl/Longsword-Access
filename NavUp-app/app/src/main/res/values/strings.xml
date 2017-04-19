@@ -22,4 +22,26 @@
     <string name="option_get_place">Get place</string>
 
     <string name="pick_place">Choose a place</string>
+    
+    <string name="button_deletePOI">Delete</string>
+    <string name="button_updatePOI">Update</string>
+    <string name="button_done_select">Done</string>
+
+    <string name="btn_name">Show Settings</string>
+    <string name="title_activity_setting">Settings</string>
+    <string name="lbl_notification">Notifications</string>
+    <string name="lbl_logout">Logout</string>
+    <string name="lbl_profile">Profile</string>
+    <string name="lbl_interestpoints">Points of Interest</string>
+    <string name="lbl_locations">My Locations</string>
+    <string name="lbl_helpfaq">Help/FAQ</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="msg_notification_title">Message Notifications</string>
+    <string name="inapp_notification_title">In-App Notifications</string>
+    <string name="title_msg_notification">Show Notifications</string>
+    <string name="title_ringtone">Sound</string>
+    <string name="title_vibrate">Vibrate</string>
+    <string name="poi_pref_share">Share Points of Interest</string>
+    <string name="poi_pref_share_info">Enabling this feature will allow other users to view your Points of Interest.</string>
+    <string name="poi_pref_title">My Points of Interest</string>
 </resources>

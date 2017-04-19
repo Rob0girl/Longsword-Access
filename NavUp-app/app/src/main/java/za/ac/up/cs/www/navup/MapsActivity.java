@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -36,6 +43,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * This is the Main page of the app, it is the central hubb that displays the map
+ * as well as navigation drawers and menus to other pages.
+ * This class is responsible for anything that happens and is displayed on the map.
+ * @author Idrian van der Westhuizen, Merissa Joubert, Bernard van Tonder
+ */
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -48,6 +71,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     String userName;
+    LatLng destination;
+    boolean loggedIn = false;
+                
+    private String selectedLocationName;
+    private String[] buildings;
+    private int buildingCount;
+    private int id;
+    private double latitude;
+    private double longitude;
+    private List<List<String>> rooms;
+    private int locationCount;
+    private String[] locations;
+    private LinkedList<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +120,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(extras != null)
         {
             userName = extras.getString("userName");
-            System.out.println(userName);
+            loggedIn = true;
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+            MenuItem login = navigationView.getMenu().getItem(3).setVisible(false);
+            MenuItem logout = navigationView.getMenu().getItem(4).setVisible(true);
+
+            destination = new LatLng(extras.getDouble("Lat"),extras.getDouble("Lng"));
         }
 
         //onMapReady(mMap);
@@ -100,7 +142,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setBuildingsEnabled(false);
-        mMap.setMaxZoomPreference(15);
+        mMap.setMaxZoomPreference(20);
+        mMap.setMinZoomPreference(15);
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -119,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         /*
             get the locations from server
          */
-
+        populateLocationListArrayAndDisplay();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -155,21 +198,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLocationChanged(Location location) {
 
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
+       /* if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
-        }
+        }*/
 
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+        if(mCurrLocationMarker == null) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title(userName);
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_user_location));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
+        }
+        else
+        {
+            mCurrLocationMarker.setPosition(latLng);
+        }
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
         //stop location updates
         if (mGoogleApiClient != null) {
@@ -274,6 +323,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            go_to_Settings();
             return true;
         }
 
@@ -290,11 +340,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             // Handle the camera action
         } else if (id == R.id.POI) {
-
+            go_to_POI();
         } else if (id == R.id.Events) {
 
         } else if (id == R.id.Login) {
             go_to_login();
+        }
+        else if (id == R.id.Logout) {
+            userName = null;
+            mCurrLocationMarker.setTitle(userName);
+            loggedIn = false;
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+            MenuItem login = navigationView.getMenu().getItem(3).setVisible(true);
+            MenuItem logout = navigationView.getMenu().getItem(4).setVisible(false);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -306,5 +365,144 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void go_to_POI()
+    {
+        Intent intent = new Intent(this, LocationList.class);
+        startActivity(intent);
+    }
+
+    public void go_to_Settings()
+    {
+        Intent intent = new Intent(this, SettingsMainActivity.class);
+        startActivity(intent);
+    }
+                
+    public void populateLocationListArrayAndDisplay() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://affogato.cs.up.ac.za:8080/nav-up/gis/get-all-buildings";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        buildingCount = response.length();
+                        locationCount = 0;
+                        buildings = new String[buildingCount];
+                        rooms = new ArrayList<List<String>>(buildingCount);
+                        try {
+                            JSONArray array = response.getJSONArray("buildings");
+                            for (int i=0; i<buildingCount; i++) {
+                                buildings[i] = array.getJSONObject(i).getString("building");
+                                rooms.add(new ArrayList<String>());
+                                populateRoomsOfBuilding(i);
+                            }
+                            onAllBuildingsStored();
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
+    }
+
+    /**
+     * This fills the location list with the data requested previously
+     */
+    public void onAllBuildingsStored() {
+        locations = new String[locationCount];
+        int currentLocationIndex = 0;
+        int roomsInBuilding;
+        for (int i=0; i<buildingCount; i++) {
+            roomsInBuilding = rooms.get(i).size();
+            for (int j=0; j < roomsInBuilding; j++){
+                locations[currentLocationIndex] = buildings[i] + ":" + rooms.get(i).get(j);
+                ++currentLocationIndex;
+            }
+        }
+    }
+    /**
+     * This function
+     * @param inBuildingNumber is the selected index from the listView.
+     */
+    public void populateRoomsOfBuilding(int inBuildingNumber){
+        final int buildingNumber = inBuildingNumber;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://affogato.cs.up.ac.za:8080/nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        int roomCount = response.length();
+                        try {
+                            JSONArray array = response.getJSONArray("rooms");
+                            markers = new LinkedList<Marker>();
+                            for (int i=0; i<roomCount; i++) {
+                                rooms.get(buildingNumber).add(array.getJSONObject(i).getString("room"));
+                                requestCoordinates(buildings[buildingNumber],
+                                        array.getJSONObject(i).getString("room"));
+                                ++locationCount;
+                            }
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
+    }
+
+    /**
+     * This function requests a building&room 's coordinates and displays a marker.
+     * @param buildingName name of the building
+     * @param roomName name of the room
+     */
+    private void requestCoordinates(String buildingName, String roomName) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://affogato.cs.up.ac.za:8080/nav-up/gis/get-location?building={"+
+                buildingName+"}&venue={"+roomName+"}";
+        final String title = buildingName + ":" + roomName;
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            latitude = response.getJSONObject("location").getDouble("lat");
+                            longitude = response.getJSONObject("location").getDouble("long");
+                            id = response.getJSONObject("location").getInt("id");
+
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(latitude, longitude))
+                                    .title(title)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.navup_logo))
+                            );
+                        } catch (JSONException jE) {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(getRequest);
     }
 }

@@ -70,6 +70,47 @@
 
         </activity>
 
+        <activity android:name=".LocationList">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+            >
+        </activity>
+
+        <activity android:name=".NewPOIActivity">
+        </activity>
+
+        <activity android:name=".SelectNewPOILocation">
+        </activity>
+
+        <activity android:name=".UpdatePOIActivity">
+        </activity>
+
+        <activity
+            android:name=".SettingsMainActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".HelpFAQActivity"
+            android:label="@string/lbl_helpfaq"
+            android:parentActivityName=".SettingsMainActivity" />
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notifications"
+            android:parentActivityName=".SettingsMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SettingsMainActivity" />
+        </activity>
+        <activity
+            android:name=".InterestPointActivity"
+            android:label="Points of Interest"
+            android:parentActivityName=".SettingsMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SettingsMainActivity" />
+        </activity>
+
     </application>
 
 </manifest>
