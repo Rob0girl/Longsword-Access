@@ -164,7 +164,7 @@ public class LocationList extends AppCompatActivity {
         int roomsInBuilding;
         for (int i=0; i<buildingCount; i++) {
             roomsInBuilding = rooms.get(i).size();
-            for (int j=0; j < roomsInBuilding; j++){
+            for (int j=0; j < roomsInBuilding; j++) {
                 locations[currentLocationIndex] = buildings[i] + ":" + rooms.get(i).get(j);
                 ++currentLocationIndex;
             }
@@ -172,11 +172,12 @@ public class LocationList extends AppCompatActivity {
     }
     /**
      * This function
-     * @param buildingNumber is the selected index from the listView.
+     * @param inBuildingNumber is the building index from which to retrieve rooms
      */
-    public void populateRoomsOfBuilding(final int buildingNumber){
+    public void populateRoomsOfBuilding(int inBuildingNumber) {
+        final int buildingNumber = inBuildingNumber;
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://www.nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
+        String url = "http://www.nav-up/gis/get-venues?building = {"+buildings[buildingNumber]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
