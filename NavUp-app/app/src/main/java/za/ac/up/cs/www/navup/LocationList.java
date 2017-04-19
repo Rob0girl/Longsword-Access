@@ -162,7 +162,7 @@ public class LocationList extends AppCompatActivity {
             roomsInBuilding = rooms.get(i).size();
             for (int j=0; j < roomsInBuilding; j++){
                 locations[currentLocationIndex] = buildings[i] + ":" + rooms.get(i).get(j);
-                ++locationCount;
+                ++currentLocationIndex;
             }
         }
     }
