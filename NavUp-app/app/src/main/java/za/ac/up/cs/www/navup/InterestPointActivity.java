@@ -33,7 +33,7 @@ public class InterestPointActivity extends AppCompatActivity {
         });
         /**
         * This method serves to persist the user's choice to show notifications with regards 
-        * to point of interests to the database.
+        * to point of interests to a local config file.
         * @param void
         * @return void
         */
