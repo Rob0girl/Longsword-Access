@@ -67,6 +67,15 @@ import java.util.Map;
  * @author Idrian van der Westhuizen, Merissa Joubert, Bernard van Tonder
  */
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -79,11 +88,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     String userName;
+
     LatLng destination;
     boolean loggedIn = false;
     boolean navigating = false;
     Polyline route = null;
     PolylineOptions routeOptions = new PolylineOptions();
+
                 
     private String selectedLocationName;
     private String[] buildings;
@@ -174,8 +185,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+
         populateLocationListArrayAndDisplay();
         route = mMap.addPolyline(routeOptions);
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -638,6 +651,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
+
     public void go_to_POI()
     {
         Intent intent = new Intent(this, LocationList.class);
@@ -659,6 +673,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void populateLocationListArrayAndDisplay() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
+
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -685,12 +700,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Toast.makeText(MapsActivity.this, "error getting buildings", Toast.LENGTH_LONG).show();
                 loadTestMarkers();
+
             }
         });
         queue.add(getRequest);
     }
+
 
     private void loadTestMarkers()
     {
@@ -700,6 +718,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
         );
     }
+
 
     /**
      * This fills the location list with the data requested previously
@@ -723,7 +742,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void populateRoomsOfBuilding(int inBuildingNumber){
         final int buildingNumber = inBuildingNumber;
         RequestQueue queue = Volley.newRequestQueue(this);
+
         String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
+
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -748,7 +769,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Toast.makeText(MapsActivity.this, "error getting venues", Toast.LENGTH_LONG).show();
+
             }
         });
         queue.add(getRequest);
@@ -775,9 +798,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
+
                                     .title(title)
                                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
                             );
+
                         } catch (JSONException jE) {
                             Toast.makeText(MapsActivity.this,
                                     "Json convert error",
@@ -787,7 +812,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Toast.makeText(MapsActivity.this, "error getting locations", Toast.LENGTH_LONG).show();
+
             }
         });
         queue.add(getRequest);

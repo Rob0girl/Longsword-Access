@@ -1,3 +1,4 @@
+
 package za.ac.up.cs.www.navup;
 
 import android.content.Intent;
@@ -168,3 +169,4 @@ public class UpdatePOIActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
