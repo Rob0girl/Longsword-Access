@@ -3,10 +3,12 @@ package za.ac.up.cs.www.navup;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -42,14 +44,20 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -73,6 +81,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     String userName;
     LatLng destination;
     boolean loggedIn = false;
+    boolean navigating = false;
+    Polyline route = null;
+    PolylineOptions routeOptions = new PolylineOptions();
                 
     private String selectedLocationName;
     private String[] buildings;
@@ -126,7 +137,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             MenuItem login = navigationView.getMenu().getItem(3).setVisible(false);
             MenuItem logout = navigationView.getMenu().getItem(4).setVisible(true);
 
-            destination = new LatLng(extras.getDouble("Lat"),extras.getDouble("Lng"));
+            if(extras.get("LATITUDE") != null) {
+                destination = new LatLng(extras.getDouble("LATITUDE"), extras.getDouble("LONGITUDE"));
+                navigating = true;
+            }
         }
 
         //onMapReady(mMap);
@@ -159,10 +173,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
         }
 
-        /*
-            get the locations from server
-         */
+
         populateLocationListArrayAndDisplay();
+        route = mMap.addPolyline(routeOptions);
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -173,6 +186,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
         mGoogleApiClient.connect();
     }
+
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -194,6 +208,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     *
+     * Updates everytime the user location updates
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
 
@@ -220,11 +239,264 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
+        //update navigation
+        if(navigating)
+        {
+            route = calcRoute(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude()),destination);
+            mMap.addPolyline(routeOptions);
+        }
+        else
+        {
+            if(route != null)
+            {
+                route.remove();
+            }
+        }
+
+
         //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
 
+    }
+
+    private Polyline calcRoute(LatLng location,LatLng destination)
+    {
+        List<LatLng> waypoints = new List<LatLng>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<LatLng> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(LatLng latLng) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends LatLng> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, @NonNull Collection<? extends LatLng> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public LatLng get(int index) {
+                return null;
+            }
+
+            @Override
+            public LatLng set(int index, LatLng element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, LatLng element) {
+
+            }
+
+            @Override
+            public LatLng remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<LatLng> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<LatLng> listIterator(int index) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<LatLng> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+
+        JSONObject sourceObj = new JSONObject();
+        JSONObject destinationObj = new JSONObject();
+        JSONObject userLocation = new JSONObject();
+        try {
+            sourceObj.put("lat",location.latitude);
+            sourceObj.put("long",location.longitude);
+
+            destinationObj.put("lat",location.latitude);
+            destinationObj.put("long",location.longitude);
+
+            userLocation.put("source",sourceObj);
+            userLocation.put("destination",destinationObj);
+            userLocation.put("restrictions",false);
+            userLocation.put("preferences",Double.POSITIVE_INFINITY);
+            //testing purposes
+            System.out.println(userLocation.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/navigation/get-route/";
+        waypoints.add(location);
+        final List<LatLng> finalWaypoints = waypoints;
+        JsonObjectRequest jsonRequest  = new JsonObjectRequest(Request.Method.GET, urlAddress, userLocation,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try{
+                            int length = Integer.parseInt(response.getString("length"));
+                           JSONArray path = response.getJSONArray("waypoints");
+                            for(int i = 0; i< path.length(); i++) {
+                                JSONObject o =  (JSONObject)path.get(i);
+                                finalWaypoints.add(new LatLng(
+                                        o.getDouble("lat"),
+                                        o.getDouble("long")
+                                        )
+                                );
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            Toast.makeText(MapsActivity.this,
+                                    "Json convert error",
+                                    Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Error handling
+                        System.out.println("Something went wrong!");
+                        Toast.makeText(MapsActivity.this, "error getting route", Toast.LENGTH_LONG).show();
+                        route = loadTestRoute(finalWaypoints);
+                        error.printStackTrace();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                //headers.put("Content-Type", "application/json;");
+                return headers;
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonRequest);
+
+
+
+      /*  for(LatLng i : finalWaypoints)
+        {
+            routeOptions.add(i);
+        }*/
+        routeOptions.add(
+                new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
+                new LatLng(-25.7557438,28.2331601),
+                destination);
+        routeOptions.color(Color.RED);
+        route.setPoints(finalWaypoints);
+
+        return route;
+    }
+
+    private Polyline loadTestRoute(List<LatLng> waypoints)
+    {
+        waypoints.add(new LatLng(-25.7560989,28.2330501));
+        waypoints.add(destination);
+
+        /*route = mMap.addPolyline(new PolylineOptions()
+            .clickable(true)
+            .add(
+                        new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
+                        new LatLng(-25.7557438,28.2331601),
+                        destination)
+                        );*/
+        routeOptions.add(
+                new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
+                new LatLng(-25.7557438,28.2331601),
+                destination);
+        routeOptions.color(Color.RED);
+
+
+       route.setPoints(waypoints);
+
+        return route;
     }
 
     @Override
@@ -338,11 +610,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (id == R.id.Profile) {
 
-            // Handle the camera action
         } else if (id == R.id.POI) {
             go_to_POI();
         } else if (id == R.id.Events) {
-
+            go_to_Events();
         } else if (id == R.id.Login) {
             go_to_login();
         }
@@ -373,6 +644,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
+    public void go_to_Events()
+    {
+        Intent intent = new Intent(this, Events.class);
+        startActivity(intent);
+    }
+
     public void go_to_Settings()
     {
         Intent intent = new Intent(this, SettingsMainActivity.class);
@@ -381,7 +658,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 
     public void populateLocationListArrayAndDisplay() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://affogato.cs.up.ac.za:8080/nav-up/gis/get-all-buildings";
+        String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -408,10 +685,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "error getting buildings", Toast.LENGTH_LONG).show();
+                loadTestMarkers();
             }
         });
         queue.add(getRequest);
+    }
+
+    private void loadTestMarkers()
+    {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(-25.75585, 28.2330092))
+                .title("test Marker")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+        );
     }
 
     /**
@@ -436,7 +723,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void populateRoomsOfBuilding(int inBuildingNumber){
         final int buildingNumber = inBuildingNumber;
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://affogato.cs.up.ac.za:8080/nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
+        String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-venues?building={"+buildings[buildingNumber]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -461,7 +748,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "error getting venues", Toast.LENGTH_LONG).show();
             }
         });
         queue.add(getRequest);
@@ -489,7 +776,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(latitude, longitude))
                                     .title(title)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.navup_logo))
+                                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
                             );
                         } catch (JSONException jE) {
                             Toast.makeText(MapsActivity.this,
@@ -500,7 +787,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MapsActivity.this, "Volley error", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "error getting locations", Toast.LENGTH_LONG).show();
             }
         });
         queue.add(getRequest);

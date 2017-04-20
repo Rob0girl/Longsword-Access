@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Once I am done with the singleton class I will save the address there so it can be called repeatedly from there and saved once
             but for now I wrote it in Login and register
          */
-        String urlAddress = "http://10.0.2.2:8080/nav-up/users/Login";
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/users/Login";
 
         final EditText userName, password;
         final TextView errorlbl;

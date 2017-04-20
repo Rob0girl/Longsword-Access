@@ -19,26 +19,34 @@ public class SettingsMainActivity extends AppCompatActivity {
     }
 
     public void openInterestPoints(View view){
+        System.out.println("----------------------------------------openInterest---------------------");
         Intent intent = new Intent(this, InterestPointActivity.class); // change to Interest Point Activity
         startActivity(intent);
     }
 
     public void openMyLocations(View view){
+        System.out.println("----------------------------------------openMyLocations---------------------");
         Intent intent = new Intent(this, SettingsMainActivity.class); // change to MyLocations Activity
         startActivity(intent);
     }
 
     public void openNotifications(View view){
+        System.out.println("----------------------------------------open Notifications---------------------");
         Intent intent = new Intent(this, NotificationActivity.class); // change to Notifications Activity
         startActivity(intent);
     }
 
     public void openHelpFAQ(View view){
+        System.out.println("----------------------------------------FAQ---------------------");
         Intent intent = new Intent(this, HelpFAQActivity.class); // change to Help/FAQ Activity
         startActivity(intent);
     }
 
-    public void logout(){
-        // logout the user
+    public void go_to_map(View view){
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("userName","");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

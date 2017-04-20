@@ -60,7 +60,8 @@ public class LocationList extends AppCompatActivity {
         hasValidCoordinates = false;
         activeBehaviour = "navigate";
 
-        populateLocationListArray();
+       // populateLocationListArray();
+       loadTestList();
 
         selectedLocationName = "";
         ListView locationView = (ListView) findViewById(R.id.locationListView);
@@ -77,7 +78,7 @@ public class LocationList extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         selectedLocationName = String.valueOf(parent.getItemAtPosition(position));
                         Toast.makeText(LocationList.this, selectedLocationName, Toast.LENGTH_LONG).show();
-                        setCoordinates();
+                        //setCoordinates();
                         if (hasValidCoordinates){
                             goToMap();
                         }
@@ -116,6 +117,7 @@ public class LocationList extends AppCompatActivity {
         deleteBtn.setTextColor(Color.WHITE);
         createBtn.setBackgroundColor(Color.LTGRAY);
         createBtn.setTextColor(Color.WHITE);
+
     }
     /**
      * This function gets all locations from server and puts each building into the building array.
@@ -125,7 +127,7 @@ public class LocationList extends AppCompatActivity {
      **/
     public void populateLocationListArray() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://www.nav-up/gis/get-all-buildings";
+        String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -143,6 +145,7 @@ public class LocationList extends AppCompatActivity {
                                 populateRoomsOfBuilding(i);
                             }
                             onAllBuildingsStored();
+
                         } catch (JSONException jE) {
                             Toast.makeText(LocationList.this,
                                     "Json convert error",
@@ -153,9 +156,26 @@ public class LocationList extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
+                        loadTestList();
                     }
                 });
         queue.add(getRequest);
+    }
+
+    private void loadTestList()
+    {
+            buildings = new String[1];
+            rooms = new ArrayList<List<String>>(1);
+            buildings[0] = "Test Marker";
+            buildingCount = 1;
+            locationCount = 1;
+            rooms.add(new ArrayList<String>());
+            rooms.get(0).add("Test Room");
+            locations = new String[1];
+            locations[0] = buildings[0] + ":" + rooms.get(0).get(0);
+            latitude =-25.75585;
+            longitude = 28.2330092;
+            hasValidCoordinates = true;
     }
 
      public void onAllBuildingsStored() {
@@ -177,7 +197,7 @@ public class LocationList extends AppCompatActivity {
     public void populateRoomsOfBuilding(int inBuildingNumber) {
         final int buildingNumber = inBuildingNumber;
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://www.nav-up/gis/get-venues?building = {"+buildings[buildingNumber]+"}";
+        String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-venues?building = {"+buildings[buildingNumber]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -210,7 +230,9 @@ public class LocationList extends AppCompatActivity {
         intent.putExtra("SELECTED_LOCATION_NAME", selectedLocationName);
         intent.putExtra("LATITUDE", latitude);
         intent.putExtra("LONGITUDE", longitude);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     /**
@@ -219,7 +241,7 @@ public class LocationList extends AppCompatActivity {
     private void setCoordinates() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String parts[] = selectedLocationName.split(":");
-        String url = "http://www.nav-up/gis/get-location?building={"+parts[0]+"}&venue={"+parts[1]+"}";
+        String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-location?building={"+parts[0]+"}&venue={"+parts[1]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -240,10 +262,13 @@ public class LocationList extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
+
             }
         });
         queue.add(getRequest);
     }
+
+
 
     /**
      * This changes the behaviour of clicking on an item in the list.
@@ -317,7 +342,7 @@ public class LocationList extends AppCompatActivity {
      * This deletes a selected location.
      */
     public void deleteSelectedLocation() {
-        String urlAddress = "http://www.nav-up/gis/delete-location";
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/delete-location";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         if (selectedLocationName.equals("")) {
@@ -391,7 +416,7 @@ public class LocationList extends AppCompatActivity {
         intent.putExtra("BUILDING", parts[0]);
         intent.putExtra("ROOM", parts[1]);
         intent.putExtra("ID", id);
-//        intent.putExtra("LATITUDE", latitude);
+  //     intent.putExtra("LATITUDE", latitude);
 //        intent.putExtra("LONGITUDE", longitude);
         startActivity(intent);
     }
