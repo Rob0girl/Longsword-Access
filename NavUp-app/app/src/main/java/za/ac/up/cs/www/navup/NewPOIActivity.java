@@ -66,7 +66,9 @@ public class NewPOIActivity extends AppCompatActivity {
      * server using volley.
      */
     public void createPointOfInterest(View view) {
-        String urlAddress = "http://www.nav-up/gis/insert-location";
+
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/insert-location";
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String latitude = extras.getString("LATITUDE");

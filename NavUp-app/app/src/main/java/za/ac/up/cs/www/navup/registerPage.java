@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +23,11 @@ import java.lang.ref.ReferenceQueue;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class acts as the Register class, it is where the user can fill in his/her details
+ * in order to create an account.
+ * @author Idrian van der Westhuizen
+ */
 
 public class registerPage extends AppCompatActivity {
 
@@ -99,7 +105,9 @@ public class registerPage extends AppCompatActivity {
                             }
                             catch(Exception e)
                             {
-                                errorlbl.setText(e.toString());
+                                Toast.makeText(registerPage.this,
+                                        "Json convert error",
+                                        Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }
@@ -109,7 +117,7 @@ public class registerPage extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // Error handling
                             System.out.println("Something went wrong!");
-                            errorlbl.setText(error.getMessage());
+                            Toast.makeText(registerPage.this, "Volley error", Toast.LENGTH_LONG).show();
                             error.printStackTrace();
                         }
                     }){
@@ -132,5 +140,6 @@ public class registerPage extends AppCompatActivity {
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

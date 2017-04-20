@@ -54,7 +54,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
+            android:label="NavUP"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,6 +69,46 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+        <activity android:name=".LocationList">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+            >
+        </activity>
+
+        <activity android:name=".NewPOIActivity">
+        </activity>
+
+        <activity android:name=".SelectNewPOILocation">
+        </activity>
+
+        <activity android:name=".UpdatePOIActivity">
+        </activity>
+
+
+        <activity
+            android:name=".SettingsMainActivity"
+            android:label="@string/title_activity_setting"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".HelpFAQActivity"
+            android:label="@string/lbl_helpfaq"
+            android:parentActivityName=".SettingsMainActivity" />
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notifications"
+            android:parentActivityName=".SettingsMainActivity" />
+        <activity
+            android:name=".InterestPointActivity"
+            android:label="Points of Interest"
+            android:parentActivityName=".SettingsMainActivity" />
+
+         <activity android:name=".Events"></activity>
+        <activity android:name=".Upcoming_Events" />
+        <activity android:name=".MyEvents" />
+        <activity android:name=".Admin_Add_Event" />
+        <activity android:name=".Admin_Events"></activity>
 
     </application>
 

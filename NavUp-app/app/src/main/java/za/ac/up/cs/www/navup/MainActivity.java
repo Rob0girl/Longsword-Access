@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,6 +19,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * This class acts as the Login class, it is where the user can either login or navigate to registration
+ * @author Idrian van der Westhuizen
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Once I am done with the singleton class I will save the address there so it can be called repeatedly from there and saved once
             but for now I wrote it in Login and register
          */
-        String urlAddress = "http://10.0.2.2:8080/nav-up/users/Login";
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/users/Login";
 
         final EditText userName, password;
         final TextView errorlbl;
@@ -99,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             catch(JSONException e)
                             {
-                                errorlbl.setText(e.getMessage());
+                                Toast.makeText(MainActivity.this,
+                                        "Json convert error",
+                                        Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }
@@ -109,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // Error handling
                             System.out.println("Something went wrong!");
-                            errorlbl.setText(error.getMessage());
+                            Toast.makeText(MainActivity.this, "Volley error", Toast.LENGTH_LONG).show();
                             error.printStackTrace();
                         }
                     }){
@@ -140,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("userName",name);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
