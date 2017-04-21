@@ -35,10 +35,11 @@ import static za.ac.up.cs.www.navup.R.layout.activity_location_list;
 /**
  * This class displays a list of all the locations. A user can select a location to navigate to it.
  * A user can also delete or change activity to update or create a point of interest.
- * @author Bernard van Tonder
+ * @author Bernard van Tonder, Idrian van der Westhuizen
  */
 
-public class LocationList extends AppCompatActivity {
+public class LocationList extends AppCompatActivity
+{
     private String selectedLocationName;
     private String[] buildings;
     private int buildingCount;
@@ -61,17 +62,14 @@ public class LocationList extends AppCompatActivity {
         hasValidCoordinates = false;
         activeBehaviour = "navigate";
 
-       // populateLocationListArray();
-       loadTestList();
-
         selectedLocationName = "";
         ListView locationView = (ListView) findViewById(R.id.locationListView);
-        if (locations != null) {
-            ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
-            locationView.setAdapter(listAdapter);
-        } else {
-            Toast.makeText(LocationList.this, "LocationList empty", Toast.LENGTH_SHORT).show();
-        }
+
+       populateLocationListArray(locationView);
+       //loadTestList();
+
+
+
 
         locationView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener(){
@@ -126,60 +124,72 @@ public class LocationList extends AppCompatActivity {
      * Performance can be improved if buildings and rooms were given from the server as one object.
      * Credit:http://www.itsalif.info/content/android-volley-tutorial-http-get-post-put
      **/
-    public void populateLocationListArray() {
+    public void populateLocationListArray(final ListView locationView) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
+        String url ="affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        buildingCount = response.length();
                         locationCount = 0;
-                        buildings = new String[buildingCount];
-                        rooms = new ArrayList<List<String>>(buildingCount);
                         try {
                             JSONArray array = response.getJSONArray("buildings");
+                            buildingCount = array.length();
+                            buildings = new String[buildingCount];
+                            rooms = new ArrayList<List<String>>(buildingCount);
                             for (int i=0; i<buildingCount; i++) {
-                                buildings[i] = array.getJSONObject(i).getString("building");
+                                buildings[i] = array.getJSONObject(i).getString("name");
                                 rooms.add(new ArrayList<String>());
                                 populateRoomsOfBuilding(i);
                             }
-                            onAllBuildingsStored();
+                            onAllBuildingsStored(locationView);
 
                         } catch (JSONException jE) {
-                            Toast.makeText(LocationList.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LocationList.this,
+                              //      "Json convert error",
+                                //    Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
-                        loadTestList();
+                     //   Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
+                        loadTestList(locationView);
                     }
                 });
         queue.add(getRequest);
     }
 
-    private void loadTestList()
+    private void loadTestList(ListView locationView)
     {
             buildings = new String[1];
-            rooms = new ArrayList<List<String>>(1);
-            buildings[0] = "Test Marker";
+            rooms = new ArrayList<List<String>>(3);
+            buildings[0] = "IT";
             buildingCount = 1;
-            locationCount = 1;
+            locationCount = 3;
             rooms.add(new ArrayList<String>());
-            rooms.get(0).add("Test Room");
-            locations = new String[1];
+            rooms.get(0).add("4-1");
+        rooms.get(0).add("4-4");
+        rooms.get(0).add("4-5");
+            locations = new String[locationCount];
             locations[0] = buildings[0] + ":" + rooms.get(0).get(0);
+        locations[1] = buildings[0] + ":" + rooms.get(0).get(1);
+        locations[2] = buildings[0] + ":" + rooms.get(0).get(2);
             latitude =-25.75585;
             longitude = 28.2330092;
             hasValidCoordinates = true;
+
+        if (locations != null) {
+            ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
+            locationView.setAdapter(listAdapter);
+        } else {
+            //Toast.makeText(LocationList.this, "LocationList empty", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
-     public void onAllBuildingsStored() {
+     public void onAllBuildingsStored(ListView locationView) {
         locations = new String[locationCount];
         int currentLocationIndex = 0;
         int roomsInBuilding;
@@ -190,6 +200,13 @@ public class LocationList extends AppCompatActivity {
                 ++currentLocationIndex;
             }
         }
+
+         if (locations != null) {
+             ListAdapter listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locations);
+             locationView.setAdapter(listAdapter);
+         } else {
+             //Toast.makeText(LocationList.this, "LocationList empty", Toast.LENGTH_SHORT).show();
+         }
     }
     /**
      * This function
@@ -198,7 +215,7 @@ public class LocationList extends AppCompatActivity {
     public void populateRoomsOfBuilding(int inBuildingNumber) {
         final int buildingNumber = inBuildingNumber;
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-venues?building = {"+buildings[buildingNumber]+"}";
+        String url = "affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-venues?building = {"+buildings[buildingNumber]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -212,15 +229,15 @@ public class LocationList extends AppCompatActivity {
                                 ++locationCount;
                             }
                         } catch (JSONException jE) {
-                            Toast.makeText(LocationList.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                           // Toast.makeText(LocationList.this,
+                             //       "Json convert error",
+                               //     Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
+                //Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
             }
         });
         queue.add(getRequest);
@@ -242,7 +259,7 @@ public class LocationList extends AppCompatActivity {
     private void setCoordinates() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String parts[] = selectedLocationName.split(":");
-        String url = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-location?building={"+parts[0]+"}&venue={"+parts[1]+"}";
+        String url = "affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-location?building={"+parts[0]+"}&venue={"+parts[1]+"}";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -254,15 +271,15 @@ public class LocationList extends AppCompatActivity {
                             id = response.getJSONObject("location").getInt("id");
                             hasValidCoordinates = true;
                         } catch (JSONException jE) {
-                            Toast.makeText(LocationList.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LocationList.this,
+                             //       "Json convert error",
+                              //      Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
+                //Toast.makeText(LocationList.this, "Volley error", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -343,7 +360,7 @@ public class LocationList extends AppCompatActivity {
      * This deletes a selected location.
      */
     public void deleteSelectedLocation() {
-        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/delete-location";
+        String urlAddress = "affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/delete-location";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         if (selectedLocationName.equals("")) {
@@ -380,7 +397,7 @@ public class LocationList extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(LocationList.this, "Volley send error.", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LocationList.this, "Volley send error.", Toast.LENGTH_LONG).show();
                             error.printStackTrace();
                         }
                     }) {
@@ -423,6 +440,8 @@ public class LocationList extends AppCompatActivity {
     }
 }
 
+<<<<<<< HEAD
+=======
     /**
      * This changes the active screen to create new activity
      */
@@ -450,3 +469,4 @@ public class LocationList extends AppCompatActivity {
         startActivity(intent);
     }
 }
+>>>>>>> origin/NavUP_androidApp

@@ -76,9 +76,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
+
 /**
- * This class renders a map of the location that the user is in and allows the user to navigate to different buildings
+ * @use handles and creates the main page and functionality of the map
+ * @author Idrian van der Westhuizen, Merissa Joubert, Bernard van Tonder
  */
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -99,7 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     PolylineOptions routeOptions = new PolylineOptions();
 
                 
-    private String selectedLocationName;
+    private String selectedLocationName="IT";
     private String[] buildings;
     private int buildingCount;
     private int id;
@@ -140,7 +144,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
-     * Initialise the map properties
+
+     * @use if the Activity was paused and started up again this will check if anything was sent to this activity
+     *      to be used like userName or the requested destination
+
      */
     @Override
     protected void onStart()
@@ -160,6 +167,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if(extras.get("LATITUDE") != null) {
                 destination = new LatLng(extras.getDouble("LATITUDE"), extras.getDouble("LONGITUDE"));
+                selectedLocationName = extras.getString("SELECTED_LOCATION_NAME");
                 navigating = true;
             }
         }
@@ -170,7 +178,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     /**
-     * Updates user location and plots the navigation route
+     * @use creates the initial map and calls the populatlocations function
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -265,7 +273,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         //update navigation
         if(navigating)
@@ -465,9 +473,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                         catch(JSONException e)
                         {
-                            Toast.makeText(MapsActivity.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(MapsActivity.this,
+                                    //"Json convert error",
+                                   // Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }
@@ -477,7 +485,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onErrorResponse(VolleyError error) {
                         // Error handling
                         System.out.println("Something went wrong!");
-                        Toast.makeText(MapsActivity.this, "error getting route", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(MapsActivity.this, "error getting route", Toast.LENGTH_LONG).show();
                         route = loadTestRoute(finalWaypoints);
                         error.printStackTrace();
                     }
@@ -497,15 +505,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Volley.newRequestQueue(this).add(jsonRequest);
 
 
-
-      /*  for(LatLng i : finalWaypoints)
+        if(jsonRequest.isCanceled())
         {
-            routeOptions.add(i);
-        }*/
-        routeOptions.add(
+            //do nothing
+        }
+        else {
+            for (LatLng i : finalWaypoints) {
+                routeOptions.add(i);
+            }
+        }
+        /*routeOptions.add(
                 new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
                 new LatLng(-25.7557438,28.2331601),
-                destination);
+                destination);*/
         routeOptions.color(Color.RED);
         route.setPoints(finalWaypoints);
 
@@ -524,13 +536,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         waypoints.add(new LatLng(-25.7560989,28.2330501));
         waypoints.add(destination);
 
-        /*route = mMap.addPolyline(new PolylineOptions()
-            .clickable(true)
-            .add(
-                        new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
-                        new LatLng(-25.7557438,28.2331601),
-                        destination)
-                        );*/
         routeOptions.add(
                 new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()),
                 new LatLng(-25.7557438,28.2331601),
@@ -636,6 +641,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * @use creates and populates the menu with the selected menu items
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -731,7 +741,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public void populateLocationListArrayAndDisplay() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
+        String url ="http://affogato.cs.up.ac.za:8080/NavUP//nav-up/gis/get-all-buildings";
+
 
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -751,15 +762,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                             onAllBuildingsStored();
                         } catch (JSONException jE) {
-                            Toast.makeText(MapsActivity.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                           // Toast.makeText(MapsActivity.this,
+                             //       "Json convert error",
+                               //     Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Toast.makeText(MapsActivity.this, "error getting buildings", Toast.LENGTH_LONG).show();
                 loadTestMarkers();
 
@@ -770,13 +780,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     /**
+     * @use fills the map with mock markers if the server does not respond,
      * Backup for in case the server is unreachable
      */
     private void loadTestMarkers()
     {
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(-25.75585, 28.2330092))
-                .title("test Marker")
+                .title(selectedLocationName)
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
         );
     }
@@ -823,17 +834,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 ++locationCount;
                             }
                         } catch (JSONException jE) {
-                            Toast.makeText(MapsActivity.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                           // Toast.makeText(MapsActivity.this,
+                             //       "Json convert error",
+                               //     Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Toast.makeText(MapsActivity.this, "error getting venues", Toast.LENGTH_LONG).show();
-
             }
         });
         queue.add(getRequest);
@@ -866,15 +875,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             );
 
                         } catch (JSONException jE) {
-                            Toast.makeText(MapsActivity.this,
-                                    "Json convert error",
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(MapsActivity.this,
+                              //      "Json convert error",
+                                //    Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Toast.makeText(MapsActivity.this, "error getting locations", Toast.LENGTH_LONG).show();
 
             }

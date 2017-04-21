@@ -21,7 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class acts as the Login class, it is where the user can either login or navigate to registration
+ * @use This class acts as the Login class, it is where the user can either login or navigate to registration
+ * it is called Main as this was the original start of the app
  * @author Idrian van der Westhuizen
  */
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             Once I am done with the singleton class I will save the address there so it can be called repeatedly from there and saved once
             but for now I wrote it in Login and register
          */
-        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/users/Login";
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/users/authenticate";
 
         final EditText userName, password;
         final TextView errorlbl;
@@ -91,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                                 if(!success)
                                 {
                                     // Some error message
-                                    errorlbl.setText("User already exists");
+                                    errorlbl.setText("Error logging in");
                                 }
                                 else
                                 {
-                                    // User is registered
-                                    errorlbl.setText("Successfully Registered");
+                                    // User is logged in
+                                    errorlbl.setText("Successfully Logged in");
                                     go_to_map(userName.getText().toString());
                                 }
 

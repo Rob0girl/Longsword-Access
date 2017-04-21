@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * where an Admin user can create new events
+ */
 public class Admin_Add_Event extends AppCompatActivity {
 
     /**
