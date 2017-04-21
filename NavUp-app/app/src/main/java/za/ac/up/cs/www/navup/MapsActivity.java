@@ -76,6 +76,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class renders a map of the location that the user is in and allows the user to navigate to different buildings
+ */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -107,6 +110,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String[] locations;
     private LinkedList<Marker> markers;
 
+    /**
+     * Check the permissions to access GPS of device and sets up the map
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +139,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Initialise the map properties
+     */
     @Override
     protected void onStart()
     {
@@ -160,7 +170,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     /**
-     *
+     * Updates user location and plots the navigation route
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -201,6 +211,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * Makes request for the user location
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
 
@@ -225,6 +239,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *
      * Updates everytime the user location updates
      * @param location
+     * The user's current location
      */
     @Override
     public void onLocationChanged(Location location) {
@@ -274,6 +289,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * Calculates the route by plotting waypoints between current location and destination
+     * @param location
+     * The current location
+     * @param destination
+     * The desired destination
+     * @return
+     * A line to be plotted on the map for navigation
+     */
     private Polyline calcRoute(LatLng location,LatLng destination)
     {
         List<LatLng> waypoints = new List<LatLng>() {
@@ -488,6 +512,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return route;
     }
 
+    /**
+     * Backup function for in case server is unreachable - Loads dummy data
+     * @param waypoints
+     * The list of waypoints of the route
+     * @return
+     * A lie to be plotted on the map for navigation
+     */
     private Polyline loadTestRoute(List<LatLng> waypoints)
     {
         waypoints.add(new LatLng(-25.7560989,28.2330501));
@@ -549,6 +580,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Handles response from user after requesting for permission for device GPS usage
+     * @param requestCode
+     * The unique identifier of the request
+     * @param permissions
+     * A list of permissions that have been requested
+     * @param grantResults
+     * A list of permissiosn that have been granted
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -582,6 +622,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // You can add here other case statements according to your requirement.
         }
     }
+
+    /**
+     * Navigates to the previous page (Activity) the user was on and closes side drawer if necessary
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -599,11 +643,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     * @param item
+     * The selected action bar item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -615,6 +665,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Checks which navigation item was selected and navigates to the appropriate page
+     * @param item
+     * The selected item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -669,7 +725,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = new Intent(this, SettingsMainActivity.class);
         startActivity(intent);
     }
-                
+
+    /**
+     * Gets a list of all buildings in the nearby area for the user to select
+     */
     public void populateLocationListArrayAndDisplay() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://affogato.cs.up.ac.za:8080/NavUP/nav-up/gis/get-all-buildings";
@@ -710,6 +769,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * Backup for in case the server is unreachable
+     */
     private void loadTestMarkers()
     {
         mMap.addMarker(new MarkerOptions()
