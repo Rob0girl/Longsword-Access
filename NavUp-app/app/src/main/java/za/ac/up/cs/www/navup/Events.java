@@ -8,10 +8,14 @@ import android.widget.Button;
 
 
 /**
- * Displays the event page and ways to navigate to other pages
+ * This is the class for the Events page of the app
  */
 public class Events extends AppCompatActivity {
 
+    /**
+     * Adds event listeners for the upcoming events, my events and administration buttons
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
