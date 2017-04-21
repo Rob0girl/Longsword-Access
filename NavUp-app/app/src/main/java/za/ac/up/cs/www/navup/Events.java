@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 
-
+/**
+ * Displays the event page and ways to navigate to other pages
+ */
 public class Events extends AppCompatActivity {
 
     @Override

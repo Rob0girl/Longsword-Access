@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class acts as the Register class, it is where the user can fill in his/her details
+ * @use This class acts as the Register class, it is where the user can fill in his/her details
  * in order to create an account.
  * @author Idrian van der Westhuizen
  */
@@ -41,10 +41,15 @@ public class registerPage extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @use this will send the the user information to the server and retreive a response, it then either goes to
+     * login page if response returns a true or stays on page if response returns false
+     */
     public void registerUser(View view)
     {
         //change this for UP-longsword server
-        String urlAddress = "http://10.0.2.2:8080/nav-up/users/registerAsUser";
+        String urlAddress = "http://affogato.cs.up.ac.za:8080/NavUP/nav-up/users/registerAsUser";
 
         EditText username, password,email;
         final TextView errorlbl;
@@ -81,6 +86,8 @@ public class registerPage extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response)
                         {
+                            System.out.println("VOLLEY");
+                            System.out.println(response);
                             /*
                                 The JSON Object in the response will look as follows:
                                 {"Success":true} if the user was successfully registered
@@ -117,7 +124,7 @@ public class registerPage extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // Error handling
                             System.out.println("Something went wrong!");
-                            Toast.makeText(registerPage.this, "Volley error", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(registerPage.this, "Volley error", Toast.LENGTH_LONG).show();
                             error.printStackTrace();
                         }
                     }){
