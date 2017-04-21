@@ -76,10 +76,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
 /**
  * @use handles and creates the main page and functionality of the map
  * @author Idrian van der Westhuizen, Merissa Joubert, Bernard van Tonder
  */
+=======
+>>>>>>> origin/NavUP_androidApp
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -710,6 +713,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         String url ="http://affogato.cs.up.ac.za:8080/NavUP//nav-up/gis/get-all-buildings";
 
 
+
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -736,7 +740,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
 
+<<<<<<< HEAD
                // Toast.makeText(MapsActivity.this, "error getting buildings", Toast.LENGTH_LONG).show();
+=======
+                Toast.makeText(MapsActivity.this, "error getting buildings", Toast.LENGTH_LONG).show();
+>>>>>>> origin/NavUP_androidApp
                 loadTestMarkers();
 
             }
@@ -744,9 +752,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         queue.add(getRequest);
     }
 
+<<<<<<< HEAD
     /**
      * @use fills the map with mock markers if the server does not respond
      */
+=======
+
+>>>>>>> origin/NavUP_androidApp
     private void loadTestMarkers()
     {
         mMap.addMarker(new MarkerOptions()
@@ -807,7 +819,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
 
+<<<<<<< HEAD
                // Toast.makeText(MapsActivity.this, "error getting venues", Toast.LENGTH_LONG).show();
+=======
+                Toast.makeText(MapsActivity.this, "error getting venues", Toast.LENGTH_LONG).show();
+>>>>>>> origin/NavUP_androidApp
 
             }
         });
@@ -850,7 +866,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
 
+<<<<<<< HEAD
                 //Toast.makeText(MapsActivity.this, "error getting locations", Toast.LENGTH_LONG).show();
+=======
+                Toast.makeText(MapsActivity.this, "error getting locations", Toast.LENGTH_LONG).show();
+>>>>>>> origin/NavUP_androidApp
 
             }
         });
