@@ -8,6 +8,10 @@ import android.widget.Button;
 
 public class Admin_Add_Event extends AppCompatActivity {
 
+    /**
+     * Adds an event handler for the button
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
