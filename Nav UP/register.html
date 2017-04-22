@@ -1,0 +1,53 @@
+<div class="container-fluid">
+     <div class="row ">
+        <div class="col-xs-10 col-xs-offset-1 ">
+        <div class="jumbotron loginTop">
+             
+            <h1 class="loginTop">NavUP</h1>
+          
+        </div>
+     </div>
+</div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form id="register" name="registrationForm">
+                <fieldset>
+                    <legend><b>Register</b></legend>
+                    <div class="form-group" ng-class="{'has-error': registerFNError}">
+                        <label for="fname">First Name</label>
+                        <input type="text" class="form-control" id="fname" name="fname" ng-model="fname" placeholder="First Name">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerSError}">
+                        <label for="sname">Surname</label>
+                        <input type="text" class="form-control" id="sname" name="sname" ng-model="sname" placeholder="Surname">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerSNError}">
+                        <label for="stud_num">Student Number / EMPLID</label>
+                        <input type="text" class="form-control" id="stud_num" name="stud_num" ng-model="stud_num" placeholder="u12345678">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerEmailError}">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" ng-model="email" placeholder="Email address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerNumError}">
+                        <label for="phone">Phone Number</label>
+                        <input type="number" class="form-control" id="phone" name="phone" ng-model="phone" placeholder="0123456789">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerPassError}">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" ng-model="password">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': registerPassConfError}">
+                        <label for="password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" ng-model="confirmPassword">
+                    </div>
+
+                    <input ng-disabled="registrationForm.$invalid" class="btn btn-default " type="submit" value="Register" ng-click="registerUser()">
+                    <br>
+                    <br>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

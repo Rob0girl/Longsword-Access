@@ -1,0 +1,84 @@
+<nav id="nav" class="navbar navbar-inverse blueE">
+    <div class="container-fluid ">
+        <div class="navbar-header">
+            <a class="navbar-brand boldE " href="#">NavUP</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right navigation">
+            <li id="home" ><a href="" ng-click="home()">Home</a></li>
+            <li id="profileNav" ng-show="profileNav"><a href="" ng-click="profile()">Profile</a></li>
+            <li class="active" id="navigateNav" ng-show="navigateNav"><a href="" ng-click="navigate()">Navigate</a></li>
+            <li id="poiNav" ng-show="poiNav"><a href="" ng-click="poi()">Points of Interest</a></li>
+            <li id="manageGisNav" ng-show="manageGisNav"><a href="" ng-click="manageGis()">Manage GIS</a></li>
+            <li id="manageUsersNav" ng-show="manageUsersNav"><a href="" ng-click="manageUsers()">Manage Users</a></li>
+            <li id="manageLocationsNav" ng-show="manageLocationsNav"><a href="" ng-click="manageLocations()">Manage Locations</a></li>
+            <li><a href="/">Log Out</a></li>
+        </ul>
+
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <h1 id="heading" style="margin-top: 0px;">Navigation</h1>
+	<div class="row">
+        <div class="col-md-6 col-md-offset-3">
+        	<div id="map" style="height: 500px;"></div>
+        </div>
+   </div>
+
+<br>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="newRoute" method="GET">
+                <fieldset>
+                    <legend>Calculate Route</legend>
+                    <div class="btn btn-default" ng-click="getLocation()">Get Current Position</div>
+                    <div class="form-group">
+                        <label for="building">From: Building</label><br>
+                        <select name="locationFrom" ng-model="locationFrom" id="building" class="form-control">
+                            <option value="-25.755627, 28.232553">Current Location</option>
+                            <option value="-25.755627, 28.232553">IT Building</option>
+                            <option value="-25.7552303, 28.2324397">EMB</option>
+                            <option value="-25.755582, 28.231214">Client Service Center</option>
+                            <option value="-25.754526, 28.232668">Chapel</option>
+                            <option value="-25.755318, 28.230490">Merenksey Library</option>
+                            <option value="-25.754545, 28.229020">Ampitheater</option>
+                            <option value="-25.753086, 28.228591">Engineering 1</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="building">To: Building</label><br>
+                        <select name="locationTo" ng-model="locationTo" id="building" class="form-control">
+                            <option value="-25.755627, 28.232553">Current Location</option>
+                            <option value="-25.755627, 28.232553">IT Building</option>
+                            <option value="-25.7552303, 28.2324397">EMB</option>
+                            <option value="-25.755582, 28.231214">Client Service Center</option>
+                            <option value="-25.754526, 28.232668">Chapel</option>
+                            <option value="-25.755318, 28.230490">Merenksey Library</option>
+                            <option value="-25.754545, 28.229020">Ampitheater</option>
+                            <option value="-25.753086, 28.228591">Engineering 1</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-default" ng-click="calculateRoute(locationFrom, locationTo)">Calculate Route</button>
+                </fieldset>
+            </form>
+        </div>
+        <br>
+        <div class="col-md-6">
+            <form>
+                <fieldset>
+                    <legend>User preferences</legend>
+                
+                    <div class="form-group">
+                        <input id ="user" name="user" type="radio" value="shortest"><label class="lab" for="user">Calculate Shortest Route</label><br>
+                        <input id ="simp" name="user" type="radio" value="simplest"><label class="lab" for="simp">Calculate Simplest Route</label><br>
+                    </div>
+
+                    <input class="btn btn-default" type="button" value="Save">
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+</div>

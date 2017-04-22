@@ -1,0 +1,109 @@
+body, html
+{
+
+    font-family: 'Lato', serif;
+    height: 100%;
+
+
+}
+
+
+
+.jumbotron
+{
+    text-align:center;
+}
+
+.newRoute
+{
+	margin-top:3%;
+}
+
+.lab
+{
+	margin-left:5px;
+}
+#map
+{
+	margin-top:2%;
+	border: 1px solid black;
+}
+#heading
+{
+	margin-top:5%;
+	text-align:center;
+
+}
+/*.box
+{
+	border: 1px solid black;
+}
+*/
+.loginTop
+{
+	color: white;
+	background-color: #BF1E27;
+	text-align: center;
+	
+	font-weight: bold;
+	/*width:63%;*/
+ 	overflow: hidden;
+
+}
+.loginLabel
+{
+	background-color: #133565;
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	color: white;
+	width:63%;
+	height: 80%;
+
+}
+.btn
+{
+	background-color: #B37E30;
+	color: white;
+	
+}
+.loginInput
+{
+	width:63%;
+}
+
+.backgroundE
+{
+ /* 	min-height:1%;
+    min-width:1%;
+    width: 100%;
+ 
+    position: absolute;
+    top:70%; bottom:50%;
+    left:0%; right:0%;
+    margin:auto;
+*/
+	width:100%;
+	height: 100%;
+	background-size:  100% 100%;
+	background-image: url("../img/background.png");
+    background-attachment: fixed; 
+
+}
+ul li a 
+{
+ color: white;
+}
+.blueE
+{
+	background-color:  #133565;
+}
+.boldE 
+{
+	font-weight: bold;
+}	
+
+.boldE  .WhiteE
+{
+	text-decoration-color: white;
+}

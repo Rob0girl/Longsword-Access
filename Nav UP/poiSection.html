@@ -1,0 +1,81 @@
+<nav id="nav" class="navbar navbar-inverse blueE">
+    <div class="container-fluid ">
+        <div class="navbar-header">
+            <a class="navbar-brand boldE " href="#">NavUP</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right navigation">
+            <li id="home" ><a href="" ng-click="home()">Home</a></li>
+            <li id="profileNav" ng-show="profileNav"><a href="" ng-click="profile()">Profile</a></li>
+            <li id="navigateNav" ng-show="navigateNav"><a href="" ng-click="navigate()">Navigate</a></li>
+            <li class="active" id="poiNav" ng-show="poiNav"><a href="" ng-click="poi()">Points of Interest</a></li>
+            <li id="manageGisNav" ng-show="manageGisNav"><a href="" ng-click="manageGis()">Manage GIS</a></li>
+            <li id="manageUsersNav" ng-show="manageUsersNav"><a href="" ng-click="manageUsers()">Manage Users</a></li>
+            <li id="manageLocationsNav" ng-show="manageLocationsNav"><a href="" ng-click="manageLocations()">Manage Locations</a></li>
+            <li><a href="/">Log Out</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+<h1 id="heading">Points of Interest</h1>
+    <div ng-show="locationReceived"class="alert alert-info" role="alert">{{locationReceivedString}}</div>
+    <div ng-show="locationSaved" class="alert alert-success" role="alert">Location Saved!</div>
+    <form id="searchLocation">
+        <fieldset>
+            <legend>Search Location</legend>
+
+            <div class="form-group">
+                <input placeholder="Enter Location Name" type="location" class="form-control" id="location" name="location" ng-model="locationString">
+            </div>
+            <input class="btn btn-default" type="button" value="Search" ng-click="searchLocation()">
+        </fieldset>
+    </form>
+    <ul ng-show="searchedLocations" class="list-group">
+        <br>
+        <li class="list-group-item" ng-repeat="item in searchedItems">{{item}}</li>
+    </ul>
+    <br>
+    <form id="locationActions">
+        <fieldset>
+            <legend>Location Actions:</legend>
+
+            <input class="btn btn-default" type="button" value="Save Current Location" ng-click="saveLocation()">
+            <br>
+            <input class="btn btn-default" type="button" value="Get Current Device Location" ng-click="getCurrentDeviceLocation()">
+        </fieldset>
+    </form>
+    <br>
+    <form id="adminActions" ng-show="manageGisNav">
+        <fieldset>
+            <legend>Admin Actions:</legend>
+
+            <div class="form-group">
+                <input placeholder="Enter Location Name" type="location" class="form-control" id="location" name="location" ng-model="addLocationString">
+            </div>
+            <input class="btn btn-default" type="button" value="Add Location" ng-click="addLocation()">
+            <br>
+            <br>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Choose Location <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="" ng-repeat="item in items">{{item}}</a></li>
+                </ul>
+            </div>
+            <input class="btn btn-default" type="button" value="Modify Location" ng-click="modifyLocation()">
+            <br>
+            <br>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Choose Location <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="" ng-repeat="item in items">{{item}}</a></li>
+                </ul>
+            </div>
+            <input class="btn btn-default" type="button" value="Remove Location" ng-click="removeLocation()">
+        </fieldset>
+    </form>
+    <br>
+</div>

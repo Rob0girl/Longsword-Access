@@ -1,0 +1,52 @@
+<div class="container-fluid">
+     <div class="row ">
+        <div class="col-xs-10 col-xs-offset-1 ">
+        <div class="jumbotron loginTop">
+             
+                <h1 class="loginTop">NavUP</h1>
+          
+        </div>
+     </div>
+    </div>
+    <div class="row">
+        <center>
+        <img src="img\uniLogo.png" alt="Tuks logo"> 
+        </center>
+
+
+    </div>
+
+    <br>
+
+
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-4">
+            <form id="login" name="loginForm">
+
+                
+                    <div class="form-group" ng-class="{'has-error': loginSnError}">
+                        <label for="stud_num" class="loginLabel ">Student Number / EMPLID</label>
+                        <input type="text" class="form-control loginInput" id="stud_num" name="stud_num" ng-model="stud_num"  placeholder="Username">
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': loginPassError}">
+                        <label for="password" class="loginLabel">Password</label>
+                        <input type="password" class="form-control loginInput" id="password" name="password" placeholder="Password" ng-model="password">
+                    </div>
+
+          
+                         <input ng-disabled="loginForm.$invalid" class="btn btn-default" type="button" value="User login" ng-click="login('user')">
+ 
+            </form>
+        </div>
+
+</div>
+    <div class="row">
+            <div class="col-xs-6 col-xs-offset-5">
+
+                <button class="btn-link" ng-click="register()">Click to Register</button>
+                <button class=" btn-link" ng-click="login('guest')">Guest login</button>
+            </div>
+            </div>
+       
+    
+</div>

@@ -1,0 +1,56 @@
+<nav id="nav" class="navbar navbar-inverse blueE">
+    <div class="container-fluid ">
+        <div class="navbar-header">
+            <a class="navbar-brand boldE " href="#">NavUP</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right navigation">
+            <li id="home" ><a href="" ng-click="home()">Home</a></li>
+            <li class="active" id="profileNav" ng-show="profileNav"><a href="" ng-click="profile()">Profile</a></li>
+            <li id="navigateNav" ng-show="navigateNav"><a href="" ng-click="navigate()">Navigate</a></li>
+            <li id="poiNav" ng-show="poiNav"><a href="" ng-click="poi()">Points of Interest</a></li>
+            <li id="manageGisNav" ng-show="manageGisNav"><a href="" ng-click="manageGis()">Manage GIS</a></li>
+            <li id="manageUsersNav" ng-show="manageUsersNav"><a href="" ng-click="manageUsers()">Manage Users</a></li>
+            <li id="manageLocationsNav" ng-show="manageLocationsNav"><a href="" ng-click="manageLocations()">Manage Locations</a></li>
+            <li><a href="/">Log Out</a></li>
+        </ul>
+
+    </div>
+</nav>
+<div class="container">
+    <h1>My Account</h1>
+    <form method="post" ng-show="profileForm">
+    <div class="form-group">
+        <label for="firstName">First name</label>
+        <input type="text" id="fname" class="form-control" value="first name of user logged in" ng-model="fname" required />
+    </div>
+    <div class="form-group">
+        <label for="lastName">Surname</label>
+        <input type="text" id="sname" class="form-control" value="last name of user logged in" ng-model="sname" required />
+    </div>
+    <div class="form-group">
+        <label for="lastName">Email</label>
+        <input type="email" id="email" class="form-control" value="email of user logged in" ng-model="email" required />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" ng-model="password" />
+    </div>
+    <!-- show what button is supposed to  do when clicked-->
+    <div class="form-group">
+        <button class="btn btn-primary" ng-click="saveProfile()">Save</button>
+        <button class="btn btn-danger" ng-click="profileForm = false; deletePrompt = true;">Delete</button>
+        <a class="btn btn-secondary" ng-click="home()">Cancel</a>
+    </div>
+    </form>
+
+    <div class="row" ng-show="deletePrompt">
+        <div class="col-md-4">
+            <h4>Are you sure you want to delete your account?</h4>
+            <button class="btn btn-default" ng-click="deleteProfile()">Yes</button>
+            <button class="btn btn-default" ng-click="profileForm = true; deletePrompt = false;">No</button>
+        </div>
+    </div>
+</div>
+
+
+
