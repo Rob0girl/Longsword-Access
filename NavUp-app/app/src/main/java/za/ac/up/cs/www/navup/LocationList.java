@@ -440,33 +440,3 @@ public class LocationList extends AppCompatActivity
     }
 }
 
-<<<<<<< HEAD
-=======
-    /**
-     * This changes the active screen to create new activity
-     */
-    public void goToCreatePOI() {
-        Intent intent = new Intent(this, NewPOIActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * This changes the active screen to the update screen and passes the selected location details.
-     */
-    public void goToUpdatePOI() {
-        if (selectedLocationName.equals("")){
-            Toast.makeText(LocationList.this, "Select location to update", Toast.LENGTH_LONG).show();
-        } else {
-           goToUpdatePOI();
-        }
-        Intent intent = new Intent(this, UpdatePOIActivity.class);
-        String parts[] = selectedLocationName.split(":");
-        intent.putExtra("BUILDING", parts[0]);
-        intent.putExtra("ROOM", parts[1]);
-        intent.putExtra("ID", id);
-//        intent.putExtra("LATITUDE", latitude);
-//        intent.putExtra("LONGITUDE", longitude);
-        startActivity(intent);
-    }
-}
->>>>>>> origin/NavUP_androidApp
