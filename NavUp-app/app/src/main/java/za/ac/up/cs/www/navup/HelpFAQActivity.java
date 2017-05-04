@@ -5,6 +5,12 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+/**
+* @author Keoagile Dinake
+* @version v1
+* This class serves to provide a list of FAQs that a user may need, at current,
+* the FAQ are just mocked.
+*/
 public class HelpFAQActivity extends AppCompatActivity {
 
     private String [] helpList = {"How to save a location", "Help Me", "Seriously Help",
