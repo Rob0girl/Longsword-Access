@@ -43,7 +43,7 @@
 
 \section{Users}
 
-\section{Service Contracts}
+\subsection{Service Contracts}
 1.	Authenticate user\\
 2.	Login\\
 3.	Register\\
@@ -55,7 +55,7 @@
     b.	Add user\\
     c.	Grant admin rights\\
 
-\subsection{Authenticate user}
+\subsubsection{Authenticate user}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{1.png}
@@ -64,7 +64,7 @@
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{2.png}
 \end{figure}
-\subsection{Login}
+\subsubsection{Login}
 \begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{3.png}
@@ -73,7 +73,7 @@
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{4.png}
 \end{figure}
-\subsection{Register}
+\subsubsection{Register}
 \begin{figure}[H]
     \label{tab:example}
 \hspace*{-2.5cm}
@@ -87,7 +87,7 @@
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{7.png}
 \end{figure}
-\subsection{View user profile}
+\subsubsection{View user profile}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{8.png}
@@ -96,7 +96,7 @@
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{ViewTestCase.png}
 \end{figure}
-\subsection{Update user information}
+\subsubsection{Update user information}
 \begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{9.png}
@@ -109,7 +109,7 @@
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{11.png}
 \end{figure}
-\subsection{Delete user profile}
+\subsubsection{Delete user profile}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{12.png}
@@ -119,7 +119,7 @@
 \includegraphics[width=180mm]{ViewTestCase.png}
 \end{figure}
 \clearpage
-\subsection{Manage user information}
+\subsubsection{Manage user information}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{13.png}
@@ -134,11 +134,11 @@
 \includegraphics[width=60mm]{Marks.png}
 \caption{Marks}
 \end{figure}
-\section{Non-functional requirements}
+\subsection{Non-functional requirements}
 1.	Security\\
 2.	User interface\\
 3.	Performance\\
-\subsection{Security}
+\subsubsection{Security}
 \begin{itemize}
      \item It is possible to change your user privileges to admin by changing the status of the user in the URL to 'admin' at any page.\\
      Once changing status to admin the users can officially give admin rights to themselves and other users.
@@ -146,18 +146,18 @@
      A password is not required to change the password or any other user information.
      \item Users can login as other users by changing the user field in the URL to any valid user name.
    \end{itemize}
-\subsection{User interface}
+\subsubsection{User interface}
 •	Features are hidden based on user status i.e. manage users tab is hidden to guest users, but is visible to admin users\\
-\subsection{Performance}
+\subsubsection{Performance}
 \begin{figure}[H]
 \includegraphics[width=60mm]{15.png}
 \end{figure}
 Performance-wise the pages were relatively fast and had nearly no noticeable loading time.
 \section{Notifications}
-\section{Service Contracts}
+\subsection{Service Contracts}
 1.	Send Notification\\
 
-\subsection{Send Notification}
+\subsubsection{Send Notification}
 \begin{figure}[H]
     \label{tab:example}
 \hspace*{-2.5cm}
@@ -168,10 +168,8 @@ Performance-wise the pages were relatively fast and had nearly no noticeable loa
 \hspace*{-2.5cm}
 \includegraphics[width=180mm,height=90mm]{NotificationsTest.png}
 \end{figure}
-
-\section{Data}
 \section{GIS}
-\section{Service Contracts}
+\subsection{Service Contracts}
 1.	Service GIS request\\
 	a.	Get XYZ coordinates of a named location\\
 2.	Add GIS information\\
@@ -180,76 +178,103 @@ Performance-wise the pages were relatively fast and had nearly no noticeable loa
 4.	Remove GIS information\\
 5.	Update GIS Map\\
 6.	Modify GIS Map\\
-\subsection{Service GIS request}
+\subsubsection{Service GIS request}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{ServiceGISReq.png}
 \end{figure}
-\subsection{Add GIS information}
+\subsubsection{Add GIS information}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{AddGISInformation.png}
 \end{figure}
-\subsection{Modify GIS information}
+\subsubsection{Modify GIS information}
 \begin{figure}[H]
 \label{tab:example}
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{ModifyGISInformation.png}
 \end{figure}
-\subsection{Remove GIS information}
+\subsubsection{Remove GIS information}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{DeleteGISInformation.png}
 \end{figure}
-\subsection{Update GIS Map}
+\subsubsection{Update GIS Map}
 \begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{UpdateGISMap.png}
 \end{figure}
-\subsection{Modify GIS Map}
+\subsubsection{Modify GIS Map}
 There is no functionality to modify the given map.
 \section{Non-functional requirements}
 \begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{NFRMarks.png}
 \end{figure}
-\subsection{User interface}
-•	The interface for adding GIS information is confusing. After saving the required information into the database, the information stays open and you cannot enter a new object until you refresh the page.
-•	There is no limit on how far the user can zoom in and out. This leaves the user fully able to see the entire world map and view other locations, which should not be able to happen in the NavUp application.
-•	The map can be dragged outside the boundaries of campus. This is not in the scope of the application.
-•	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way.
+\subsubsection{User interface}
+•	The interface for adding GIS information is confusing. After saving the required information into the database, the information stays open and you cannot enter a new object until you refresh the page.\\
+•	There is no limit on how far the user can zoom in and out. This leaves the user fully able to see the entire world map and view other locations, which should not be able to happen in the NavUp application.\\
+•	The map can be dragged outside the boundaries of campus. This is not in the scope of the application.\\
+•	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way.\\
 \section{Points of interest}
-\section{Service Contracts}
+\subsection{Service Contracts}
 1. Search Location\\
 2. Save Location\\
 3. Get Current Location\\
 4. Add Location\\
 5. Modify Location\\
 6. Remove Location\\
-\subsection{Functional Requirement Rating}
-\begin{figure}[ht!]
+\subsubsection{Functional Requirement Rating}
+\begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180cm]{mark-tbl-poi.png}
 \end{figure}
-\subsection{Comment Index}
-\begin{figure}[ht!]
+\subsubsection{Comment Index}
+\begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180cm]{comments-poi.png}
 \end{figure}
-\subsection{Figures}
-\begin{figure}[ht!]
+\subsubsection{Figures}
+\begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180cm]{fig1-2-poi.png}
 \end{figure}
-\begin{figure}[ht!]
+\begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180cm]{fig3-4-poi.png}
 \end{figure}
-\subsection{Conclusion}
-\begin{figure}[ht!]
+\subsubsection{Conclusion}
+\begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180cm]{conclusion-poi.png}
 \end{figure}
 \section{Navigation}
+\subsection{Service Contracts}
+1.	Specify current location\\
+2.	Specify destination\\
+3.	Select route preference option\\
+\subsubsection{Specify current location}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180mm]{Nav1.png}
+\end{figure}
+•	The “Current Location” option does not locate the user but is hard-coded\\
+•	The list of buildings is not comprehensive – It only has a handful of buildings\\
+\subsubsection{Specify destination}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180mm]{Nav2.png}
+\end{figure}
+•	“Current Location” is a redundant option\\
+•	The location selected in the From Location should be removed as a possible option in the Destination list\\
+\subsubsection{Select route preference option}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180mm]{Nav3.png}
+\end{figure}
+•	In many cases there is no distinction between the two routes – The difference, such as difference in distance, should be shown to the user\\
+\subsection{Non-functional requirements}
+\subsubsection{User interface}
+•	Layout is responsive and is still usable on small screens such as mobile phones\\
+•	The map is difficult to work with and does not portray the route in a clear manner\\
 \end{document}
-Contact GitHub
