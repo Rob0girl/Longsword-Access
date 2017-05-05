@@ -134,6 +134,15 @@
 \includegraphics[width=60mm]{Marks.png}
 \caption{Marks}
 \end{figure}
+\begin{itemize}
+\item Authenticate barely functioned and there were far too many security loopholes on the access side when a user needed to be authenticated\\
+\item Login functioned as needed and only when trying to break the system do these errors reveal themselves\\
+\item Register functioned as needed, but was not very clear on certain errors or the way they handled errors wasn't very user friendly\\
+\item View user profile was the best out of the service contracts it did what it needed to do, but we felt that there could have been done more visually and functionally\\
+\item Update user profile functioned, but it also allowed the user to potential break or corrupt their own profile by entering nonsensical data\\
+\item Delete functioned as needed, but again there wasn't too much to it and they could have improved on it visually\\
+\item Manage user information, despite being able to grant yourself admin rights by hacking the authenticate function, there is also almost no real functionality coded onto the page other than simplistic visuals.
+  \end{itemize}
 \subsection{Non-functional requirements}
 1.	Security\\
 2.	User interface\\
@@ -147,7 +156,7 @@
      \item Users can login as other users by changing the user field in the URL to any valid user name.
    \end{itemize}
 \subsubsection{User interface}
-•	Features are hidden based on user status i.e. manage users tab is hidden to guest users, but is visible to admin users\\
+Features are hidden based on user status i.e. manage users tab is hidden to guest users, but is visible to admin users\\
 \subsubsection{Performance}
 \begin{figure}[H]
 \includegraphics[width=60mm]{15.png}
@@ -206,16 +215,18 @@ Performance-wise the pages were relatively fast and had nearly no noticeable loa
 \end{figure}
 \subsubsection{Modify GIS Map}
 There is no functionality to modify the given map.
-\section{Non-functional requirements}
+\subsection{Non-functional requirements}
 \begin{figure}[H]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{NFRMarks.png}
 \end{figure}
 \subsubsection{User interface}
-•	The interface for adding GIS information is confusing. After saving the required information into the database, the information stays open and you cannot enter a new object until you refresh the page.\\
-•	There is no limit on how far the user can zoom in and out. This leaves the user fully able to see the entire world map and view other locations, which should not be able to happen in the NavUp application.\\
-•	The map can be dragged outside the boundaries of campus. This is not in the scope of the application.\\
-•	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way.\\
+\begin{itemize}
+\item	The interface for adding GIS information is confusing. After saving the required information into the database, the information stays open and you cannot enter a new object until you refresh the page.\\
+\item	There is no limit on how far the user can zoom in and out. This leaves the user fully able to see the entire world map and view other locations, which should not be able to happen in the NavUp application.\\
+\item	The map can be dragged outside the boundaries of campus. This is not in the scope of the application.\\
+\item	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way.\\
+  \end{itemize}
 \section{Points of interest}
 \subsection{Service Contracts}
 1. Search Location\\
@@ -258,23 +269,31 @@ There is no functionality to modify the given map.
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{Nav1.png}
 \end{figure}
-•	The “Current Location” option does not locate the user but is hard-coded\\
-•	The list of buildings is not comprehensive – It only has a handful of buildings\\
+\begin{itemize}
+\item	The “Current Location” option does not locate the user but is hard-coded\\
+\item	The list of buildings is not comprehensive – It only has a handful of buildings\\
 \subsubsection{Specify destination}
+\end{itemize}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{Nav2.png}
 \end{figure}
-•	“Current Location” is a redundant option\\
-•	The location selected in the From Location should be removed as a possible option in the Destination list\\
+\begin{itemize}
+\item	“Current Location” is a redundant option\\
+\item	The location selected in the From Location should be removed as a possible option in the Destination list\\
 \subsubsection{Select route preference option}
+\end{itemize}
 \begin{figure}[ht!]
 \hspace*{-2.5cm}
 \includegraphics[width=180mm]{Nav3.png}
 \end{figure}
-•	In many cases there is no distinction between the two routes – The difference, such as difference in distance, should be shown to the user\\
+\begin{itemize}
+\item	In many cases there is no distinction between the two routes – The difference, such as difference in distance, should be shown to the user\\
+\end{itemize}
 \subsection{Non-functional requirements}
 \subsubsection{User interface}
-•	Layout is responsive and is still usable on small screens such as mobile phones\\
-•	The map is difficult to work with and does not portray the route in a clear manner\\
+\begin{itemize}
+\item	Layout is responsive and is still usable on small screens such as mobile phones\\
+\item	The map is difficult to work with and does not portray the route in a clear manner\\
+\end{itemize}
 \end{document}
