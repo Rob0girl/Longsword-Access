@@ -31,7 +31,7 @@
 		 &	\\ \hline
 		\hline
 	\end{tabu}
-	
+
 	\end{center}
 
 	\pagenumbering{gobble}
@@ -57,75 +57,75 @@
 
 \subsection{Authenticate user}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{1.png}
 \end{figure}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{2.png}
 \end{figure}
 \subsection{Login}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{3.png}
 \end{figure}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{4.png}
 \end{figure}
 \subsection{Register}
 \begin{figure}[H]
     \label{tab:example}
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{5.png}
 \end{figure}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{6.png}
 \end{figure}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{7.png}
 \end{figure}
 \subsection{View user profile}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{8.png}
 \end{figure}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{ViewTestCase.png}
 \end{figure}
 \subsection{Update user information}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{9.png}
 \end{figure}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{10.png}
 \end{figure}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{11.png}
 \end{figure}
 \subsection{Delete user profile}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{12.png}
 \end{figure}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{ViewTestCase.png}
 \end{figure}
 \clearpage
 \subsection{Manage user information}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{13.png}
 \end{figure}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{14.png}
 \end{figure}
 \clearpage
@@ -160,12 +160,12 @@ Performance-wise the pages were relatively fast and had nearly no noticeable loa
 \subsection{Send Notification}
 \begin{figure}[H]
     \label{tab:example}
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{5.png}
 \end{figure}
 
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm,height=90mm]{NotificationsTest.png}
 \end{figure}
 
@@ -182,42 +182,74 @@ Performance-wise the pages were relatively fast and had nearly no noticeable loa
 6.	Modify GIS Map\\
 \subsection{Service GIS request}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{ServiceGISReq.png}
 \end{figure}
 \subsection{Add GIS information}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{AddGISInformation.png}
 \end{figure}
 \subsection{Modify GIS information}
 \begin{figure}[H]
 \label{tab:example}
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{ModifyGISInformation.png}
 \end{figure}
 \subsection{Remove GIS information}
 \begin{figure}[ht!]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{DeleteGISInformation.png}
 \end{figure}
 \subsection{Update GIS Map}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{UpdateGISMap.png}
 \end{figure}
 \subsection{Modify GIS Map}
 There is no functionality to modify the given map.
 \section{Non-functional requirements}
 \begin{figure}[H]
-\hspace*{-2.5cm} 
+\hspace*{-2.5cm}
 \includegraphics[width=180mm]{NFRMarks.png}
 \end{figure}
 \subsection{User interface}
 •	The interface for adding GIS information is confusing. After saving the required information into the database, the information stays open and you cannot enter a new object until you refresh the page.
 •	There is no limit on how far the user can zoom in and out. This leaves the user fully able to see the entire world map and view other locations, which should not be able to happen in the NavUp application.
 •	The map can be dragged outside the boundaries of campus. This is not in the scope of the application.
-•	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way. 
+•	The interface for GIS data modification is confusing. The labels do not guide the user in what he or she is doing in any way.
 \section{Points of interest}
+\section{Service Contracts}
+1. Search Location\\
+2. Save Location\\
+3. Get Current Location\\
+4. Add Location\\
+5. Modify Location\\
+6. Remove Location\\
+\subsection{Functional Requirement Rating}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180cm]{mark-tbl-poi.png}
+\end{figure}
+\subsection{Comment Index}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180cm]{comments-poi.png}
+\end{figure}
+\subsection{Figures}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180cm]{fig1-2-poi.png}
+\end{figure}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180cm]{fig3-4-poi.png}
+\end{figure}
+\subsection{Conclusion}
+\begin{figure}[ht!]
+\hspace*{-2.5cm}
+\includegraphics[width=180cm]{conclusion-poi.png}
+\end{figure}
 \section{Navigation}
 \end{document}
+Contact GitHub
